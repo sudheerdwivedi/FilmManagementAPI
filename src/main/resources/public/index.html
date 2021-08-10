@@ -1,0 +1,113 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.js"
+          integrity="sha512-lyIq9fRcCeSCXhp41XC/250UBmypAHV8KW+AhLcSEIksWHBfhzub6XXwDe67wTpOG8zrO2NAU/TYmEaCW+aQSg=="
+          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"
+          integrity="sha512-iKDtgDyTHjAitUDdLljGhenhPwrbBfqTKWO1mkhSFH3A7blITC9MhYon6SjnMhp4o0rADGw9yAC6EW4t5a4K3g=="
+          crossorigin="anonymous"></script> 
+ 
+  <div>
+	  <label for="message-input">Enter Film Name</label>
+	  <input type="text" id="message-input">
+	  <button onclick="sendMessage()">send</button>
+	  <button onclick="showAllFilms()">Show All Films</button>
+  </div>
+</br>
+<!--  <div>
+	Film Name:<input type="text" id="film_name" />
+	Comment:<input type="text" id="film_comment" />
+	<button onclick="addComment()">Add Comment</button>
+</div> -->
+
+<div>
+ <ul id="message-list"></ul>
+</div>
+
+  <script type="text/javascript"> 
+  
+//Try to set up WebSocket connection with the handshake at "http://localhost:8080/socketEndPoint"
+  let sock = new SockJS("http://localhost:8080/socketEndPoint");
+  // Create a new StompClient object with the WebSocket endpoint
+  let client = Stomp.over(sock);
+  client.connect({'username': 'Jimbob', 'password': 'pass'}, (frame) => {
+
+      client.subscribe("/topic/messages", payload => {
+          let message_list = document.getElementById('message-list');
+          if(message_list){
+        	  let message = document.createElement('li');
+              message.appendChild(document.createTextNode(payload.body));
+              message_list.appendChild(message);
+        	} 
+          
+          let all_film_list = document.getElementById("show-film-list");
+            if(all_film_list!=null){
+          	  let message = document.createElement('li');
+                message.appendChild(document.createTextNode(payload.body));
+                all_film_list.appendChild(message);
+          	} 
+            
+            let film_comment_response = document.getElementById("show-comment-response");
+            if(film_comment_response!=null){
+            	
+          	  let message = document.createElement('li');
+                message.appendChild(document.createTextNode(payload.body));
+                film_comment_response.appendChild(message);
+          	} 
+      
+      });
+
+  });  
+ 
+  // Take the value in the ‘message-input’ text field and send it to the server with empty headers.
+  function sendMessage(){
+      let input = document.getElementById("message-input");
+      let message = input.value;
+      //let msg = JSON.stringify({message: message});
+      client.send('/app/films/'+message, {}, message);
+  }
+  
+  // Take the value in the ‘message-input’ text field and send it to the server with empty headers.
+  function showAllFilms(){
+      let all_film_list = document.getElementById("show-film-list");
+      if(all_film_list!=null){
+    	  all_film_list.remove();
+      }
+      client.send('/app/films', {}, {});
+  }
+  
+  // Take the value in the ‘message-input’ text field and send it to the server with empty headers.
+  function addComment(){
+	  let film_comment_response = document.getElementById("show-comment-response");
+	  if(film_comment_response!=null){
+		  film_comment_response.remove();
+      }
+      let filmName = document.getElementById("film_name");
+      nameValue = filmName.value;
+
+      let filmComment = document.getElementById("film_comment");
+      commentValue = filmComment.value;
+
+      
+      client.send('/app/films/'+ nameValue + '/comment', {}, commentValue);
+/*       
+      this.state.stompClient.send("/app/send", {}, {"data": this.state.data}); */
+  }
+  
+  function clear() {
+
+	 window.location.href = 'http://localhost:8080';
+  }
+  
+  </script>
+
+</body>
+
+</html>
