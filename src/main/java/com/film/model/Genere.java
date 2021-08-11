@@ -21,7 +21,7 @@ public class Genere {
 	private int id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id",insertable = false, updatable = false, nullable = false )
+	@JoinColumn(name = "FILM_ID", nullable = false)
 	@JsonIgnore
 	private Film film;
 	
