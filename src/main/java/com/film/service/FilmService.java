@@ -49,7 +49,6 @@ public class FilmService {
 			}
 			Comment newComment = new Comment();
 			newComment.setComment(comment);
-			newComment.setName(filmName);
 			newComment.setFilm(film);
 			commnents.add(newComment);
 			film.setComments(commnents);

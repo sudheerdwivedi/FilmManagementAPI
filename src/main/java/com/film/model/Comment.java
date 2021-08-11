@@ -18,26 +18,18 @@ public class Comment {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID")
 	private int id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="id",insertable = false, updatable = false, nullable = false )
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "FILM_ID", nullable = false)
 	@JsonIgnore
 	private Film film;
-	
-	@Column(name = "NAME")
-	private String name;
 	
 	@Column(name = "COMMENT")
 	private String comment;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getComment() {
 		return comment;
@@ -55,12 +47,12 @@ public class Comment {
 		this.film = film;
 	}
 
-	public String getName() {
-		return name;
+	public int getId() {
+		return id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

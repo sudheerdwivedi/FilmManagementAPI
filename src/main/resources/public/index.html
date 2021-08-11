@@ -21,11 +21,11 @@
 	  <button onclick="showAllFilms()">Show All Films</button>
   </div>
 </br>
-<!--  <div>
+  <div>
 	Film Name:<input type="text" id="film_name" />
 	Comment:<input type="text" id="film_comment" />
 	<button onclick="addComment()">Add Comment</button>
-</div> -->
+</div>
 
 <div>
  <ul id="message-list"></ul>
@@ -97,8 +97,6 @@
 
       
       client.send('/app/films/'+ nameValue + '/comment', {}, commentValue);
-/*       
-      this.state.stompClient.send("/app/send", {}, {"data": this.state.data}); */
   }
   
   function clear() {

@@ -1,6 +1,7 @@
 package com.film.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,10 +11,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -23,11 +23,11 @@ public class Film {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column (name = "ID")
-	private int id;
+	private int filmId;
 
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "film")
-	private List<Comment> comments;
+	private List<Comment> comments = new ArrayList<Comment>();
 	
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "film")
@@ -51,13 +51,6 @@ public class Film {
 	@Column (name = "PHOTO")
 	private byte[] photo;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -122,5 +115,14 @@ public class Film {
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+
+	public int getFilmId() {
+		return filmId;
+	}
+
+	public void setFilmId(int filmId) {
+		this.filmId = filmId;
+	}
+	
 	
 }
